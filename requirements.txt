@@ -3,3 +3,4 @@ gunicorn
 python-frontmatter
 markdown
 requests
+python-dotenv
