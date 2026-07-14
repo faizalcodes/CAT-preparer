@@ -31,7 +31,7 @@ ARTICLES_DIR = BASE_DIR / "articles"
 DB_PATH = BASE_DIR / "progress.db"
 
 USERS = {
-    "shobhana": {"label": "Shobhana", "theme": "lavender"},
+    "Shobhi": {"label": "Shobhi", "theme": "lavender"},
     "faiz": {"label": "Faiz", "theme": "ocean"},
 }
 

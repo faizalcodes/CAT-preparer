@@ -17,7 +17,7 @@ This drops a new `articles/<category>/part-<n>.md` file. Parts within a category
 ```
 python app.py
 ```
-Then open http://localhost:5000, pick Shobhana (lavender) or Faiz (ocean), and start reading.
+Then open http://localhost:5000, pick Shobhi (lavender) or Faiz (ocean), and start reading.
 
 ## Notes
 - Streak counts consecutive days with at least one completed article.
