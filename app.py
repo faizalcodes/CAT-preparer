@@ -58,6 +58,8 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Initialize database when the app is imported
+init_db()
 
 def mark_complete(user, category, part):
     conn = get_db()
@@ -434,4 +436,4 @@ def logout():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
