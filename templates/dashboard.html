@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page">
+  <header class="topbar fade-in-down">
+    <h1>Hey {{ user }} <span class="sparkle">✧</span></h1>
+    <div class="streak-badge">🔥 {{ streak }} day{{ 's' if streak != 1 else '' }} streak</div>
+    <a class="logout-link" href="{{ url_for('logout') }}">switch reader</a>
+  </header>
+
+  {% if not categories %}
+  <p class="empty-state">No articles yet — run <code>generate_article.py</code> to add some, then refresh.</p>
+  {% endif %}
+
+  {% for cat, articles in categories.items() %}
+  <section class="category-block fade-in-up">
+    <h2>{{ cat.replace('-', ' ') | title }}</h2>
+    <div class="article-list">
+      {% for a in articles %}
+      <div class="article-row {{ 'locked' if not a.unlocked }} {{ 'done' if a.done }}">
+        {% if a.unlocked %}
+        <a href="{{ url_for('article', category=cat, part=a.part) }}" class="article-link">
+          <span class="status-icon">{{ '✔' if a.done else '○' }}</span>
+          <span class="article-title">{{ a.title }}</span>
+        </a>
+        {% else %}
+        <span class="article-link locked-link">
+          <span class="status-icon">🔒</span>
+          <span class="article-title">{{ a.title }}</span>
+        </span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

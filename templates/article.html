@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page article-page">
+  <a href="{{ url_for('dashboard') }}" class="back-link fade-in-down">← back to articles</a>
+
+  <div class="article-layout">
+    <article class="article-body fade-in-up">
+      <h1>{{ art.title }}</h1>
+      {% if art.source %}<a class="source-link" href="{{ art.source }}" target="_blank" rel="noopener">original source ↗</a>{% endif %}
+      <div class="article-content">
+        {{ art.body_html | safe }}
+      </div>
+
+      <form method="post" action="{{ url_for('complete', category=category, part=part) }}" class="complete-form">
+        <button type="submit" class="complete-btn" {{ 'disabled' if done }}>
+          {{ '✔ Completed' if done else 'Mark as complete' }}
+        </button>
+      </form>
+    </article>
+
+    <aside class="word-bank fade-in-up">
+      <h3>Word Bank</h3>
+      <p class="word-bank-hint">Tap a highlighted word in the article, or one below.</p>
+
+      <div class="quiz-mode-buttons">
+        <button id="startQuizBtn" class="quiz-start-btn" type="button">📝 Practice all words</button>
+        <button id="startSingleQuizBtn" class="quiz-start-btn quiz-start-btn--secondary" type="button">🎯 Practice one word</button>
+      </div>
+
+      <ul class="word-list">
+        {% for w in art.words %}
+        <li class="word-item" data-word="{{ w.word }}" data-meaning="{{ w.meaning }}" data-example="{{ w.example }}">
+          {{ w.word }}
+        </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+</div>
+
+<!-- blooming flower that follows scroll progress -->
+<div class="reading-flower" id="readingFlower">
+  <svg viewBox="0 0 100 100" width="56" height="56">
+    <g class="petal petal-1"><ellipse cx="50" cy="28" rx="12" ry="20"/></g>
+    <g class="petal petal-2"><ellipse cx="50" cy="28" rx="12" ry="20"/></g>
+    <g class="petal petal-3"><ellipse cx="50" cy="28" rx="12" ry="20"/></g>
+    <g class="petal petal-4"><ellipse cx="50" cy="28" rx="12" ry="20"/></g>
+    <g class="petal petal-5"><ellipse cx="50" cy="28" rx="12" ry="20"/></g>
+    <circle class="flower-center" cx="50" cy="50" r="9"/>
+  </svg>
+</div>
+
+<div class="word-popup" id="wordPopup">
+  <div class="word-popup-inner">
+    <button class="word-popup-close" id="wordPopupClose">×</button>
+    <h4 id="popupWord"></h4>
+    <p id="popupMeaning"></p>
+    <p class="popup-example" id="popupExample"></p>
+  </div>
+</div>
+
+<div class="quiz-modal" id="quizModal">
+  <div class="quiz-modal-inner">
+    <button class="quiz-modal-close" id="quizModalClose">×</button>
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<!-- word picker for single-question mode -->
+<div class="quiz-modal" id="wordPickerModal">
+  <div class="quiz-modal-inner">
+    <button class="quiz-modal-close" id="wordPickerClose">×</button>
+    <h3>Pick a word to practice</h3>
+    <ul class="word-picker-list" id="wordPickerList"></ul>
+  </div>
+</div>
+{% endblock %}

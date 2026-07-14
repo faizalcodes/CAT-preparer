@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="picker-screen">
+  <div class="floating-petal p1">✿</div>
+  <div class="floating-petal p2">❀</div>
+  <div class="floating-petal p3">✿</div>
+  <div class="picker-card fade-in-up">
+    <h1>Who's reading today?</h1>
+    <div class="user-choices">
+      {% for key, u in users.items() %}
+      <a href="{{ url_for('set_user', name=key) }}" class="user-pill theme-{{ u.theme }}">
+        {{ u.label }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
