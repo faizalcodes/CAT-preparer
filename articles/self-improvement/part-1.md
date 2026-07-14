@@ -1,9 +1,9 @@
 ---
 title: "Can mindfulness help you overcome your cognitive biases? | Aeon Essays"
 source: "https://aeon.co/essays/can-mindfulness-help-you-overcome-your-cognitive-biases"
-category: "self-improvement"
+category: "Self-improvement"
 part: 1
-date_added: "2026-07-13"
+date_added: "2026-07-14"
 ---
 
 ![A modern office reception with hanging lights, a person at a desk and reflections in the glass.](https://images.aeonmedia.co/images/f0936c52-9ccb-4465-b858-d4c2013ba869/essay-gettyimages-1227857130.jpg?width=3840&quality=75&format=auto)
@@ -239,83 +239,78 @@ David A Sbarra](https://aeon.co/essays/this-is-why-cognitive-behavioural-therapy
 
 ## Word Bank
 
-### vignette
-**Meaning:** a brief descriptive scene or short written sketch
-
-**Example:** The exam included a vignette about a tricky negotiation.
-
 ### aversion
-**Meaning:** a strong dislike or avoidance of something
+**Meaning:** A strong dislike or unwillingness to do something.
 
-**Example:** She has an aversion to eating shellfish.
+**Example:** Her aversion to public speaking prevented her from attending the conference.
 
-### nuance
-**Meaning:** a subtle difference or distinction in meaning
+### cognitive
+**Meaning:** Relating to conscious intellectual activity such as thinking or reasoning.
 
-**Example:** The translator captured the nuance of the original poem.
-
-### disposition
-**Meaning:** a person's natural tendency or temperament
-
-**Example:** His calm disposition helped in the crisis.
-
-### secular
-**Meaning:** not connected with religious or spiritual matters
-
-**Example:** The school follows a secular curriculum.
-
-### novelty
-**Meaning:** the quality of being new, or a new item
-
-**Example:** The novelty of the app attracted many users.
-
-### durable
-**Meaning:** able to withstand wear or last a long time
-
-**Example:** They bought a durable backpack for hiking.
-
-### reluctance
-**Meaning:** unwillingness to do something
-
-**Example:** His reluctance to apologize worsened the feud.
-
-### endowment
-**Meaning:** a natural talent or gift
-
-**Example:** The child's artistic endowment was remarkable.
-
-### attribution
-**Meaning:** the act of assigning a cause or source
-
-**Example:** The attribution of the quote to Einstein was wrong.
-
-### anchor
-**Meaning:** to fix firmly in the mind or establish as a reference point
-
-**Example:** The first impression can anchor our later judgments.
-
-### abide
-**Meaning:** to remain or dwell; to endure
-
-**Example:** A faint smell of roses abided in the room.
-
-### telling
-**Meaning:** revealing or indicative of something significant
-
-**Example:** His sudden pause was telling of his guilt.
+**Example:** The cognitive demands of the puzzle exhausted the students.
 
 ### irrationality
-**Meaning:** the state of being illogical or unreasonable
+**Meaning:** The state of being illogical or unreasonable.
 
-**Example:** The irrationality of the panic puzzled observers.
+**Example:** His irrationality became apparent when he refused the profitable deal out of fear.
 
-### yield
-**Meaning:** to give way or surrender to pressure or influence
+### nonreactivity
+**Meaning:** The quality of not reacting impulsively to stimuli or emotions.
 
-**Example:** The old lock yielded to the thief's tools.
+**Example:** Through nonreactivity, she observed her anger without acting on it.
 
-### induce
-**Meaning:** to bring about or cause to happen
+### nuance
+**Meaning:** A subtle difference or distinction in meaning, expression, or tone.
 
-**Example:** The medicine induced a deep sleep.
+**Example:** The translator captured every nuance of the original poem.
+
+### endowment
+**Meaning:** The act of giving or possessing a quality or asset; overvaluing owned items in psychology.
+
+**Example:** The university received a large endowment from the alumnus.
+
+### vignette
+**Meaning:** A brief descriptive scene or short case scenario.
+
+**Example:** The trainer presented a vignette to illustrate the negotiation tactic.
+
+### attribution
+**Meaning:** The assignment of cause or characteristic to someone or something.
+
+**Example:** His attribution of the failure to luck ignored his own mistakes.
+
+### disposition
+**Meaning:** A person's inherent qualities of mind or character; tendency.
+
+**Example:** Her cheerful disposition made her popular among colleagues.
+
+### secular
+**Meaning:** Not religious or spiritual; worldly.
+
+**Example:** The secular curriculum focused on science and logic rather than faith.
+
+### meditative
+**Meaning:** Relating to or resembling deep contemplation or meditation.
+
+**Example:** He spent a meditative hour watching the sunset by the lake.
+
+### novelty
+**Meaning:** The quality of being new, original, or unusual.
+
+**Example:** The novelty of the gadget wore off after a few weeks.
+
+### paralysis
+**Meaning:** Inability to act or function, often metaphorical.
+
+**Example:** The committee's paralysis prevented any decision from being made.
+
+### abide
+**Meaning:** To accept or act in accordance with; to dwell.
+
+**Example:** The old traditions still abide in the village.
+
+### reflex
+**Meaning:** An automatic, unthinking response to a stimulus.
+
+**Example:** His reflex was to duck when he heard the loud noise.
 

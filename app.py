@@ -393,6 +393,9 @@ def dashboard():
         theme=USERS[user]["theme"],
     )
 
+@app.route("/healthz")
+def healthz():
+    return {"status": "ok"}, 200
 
 @app.route("/article/<category>/<int:part>")
 def article(category, part):

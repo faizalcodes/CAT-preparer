@@ -132,7 +132,7 @@ h1, h2, h3, h4 {
 .user-pill.theme-ocean { background: linear-gradient(135deg, #4fc0c2, #2b8b8e); }
 
 /* ---------- layout ---------- */
-.page { max-width: 880px; margin: 0 auto; padding: 32px 24px 80px; }
+.page { max-width: 880px; margin: 0 auto; padding: 32px 24px 80px; position: relative; }
 .topbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
 .topbar h1 { margin: 0; flex: 1; }
 .sparkle { color: var(--primary); }
@@ -175,6 +175,27 @@ h1, h2, h3, h4 {
 .back-link { display: inline-block; margin-bottom: 20px; color: var(--primary-dark); text-decoration: none; font-weight: 600; }
 .back-link:hover { text-decoration: underline; }
 
+.article-page {
+  position: relative;
+  z-index: 1;
+}
+/* soft ambient color blobs behind the reading card, purely decorative */
+.article-page::before,
+.article-page::after {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  pointer-events: none;
+}
+.article-page::before { top: -120px; left: -140px; }
+.article-page::after { bottom: -160px; right: -120px; }
+
 .article-layout { display: grid; grid-template-columns: 2.2fr 1fr; gap: 28px; align-items: start; }
 @media (max-width: 800px) { .article-layout { grid-template-columns: 1fr; } }
 
@@ -199,6 +220,14 @@ h1, h2, h3, h4 {
 .vocab-word:hover { background: var(--primary); color: white; }
 
 .complete-form { margin-top: 28px; }
+.unlock-hint {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  margin: 4px 0 10px;
+  transition: opacity 0.3s ease;
+}
+.unlock-hint.hidden { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+
 .complete-btn {
   padding: 12px 28px;
   border: none;
@@ -208,10 +237,18 @@ h1, h2, h3, h4 {
   font-weight: 700;
   font-family: 'Quicksand', sans-serif;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .complete-btn:hover:not(:disabled) { transform: scale(1.04); }
-.complete-btn:disabled { background: #bbb; cursor: default; }
+.complete-btn:disabled { background: #bbb; cursor: not-allowed; }
+
+@keyframes readyPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(167,139,216,0.55); }
+  50% { box-shadow: 0 0 0 10px rgba(167,139,216,0); }
+}
+.complete-btn.ready {
+  animation: readyPulse 1.6s ease-out 2;
+}
 
 .word-bank h3 { margin-top: 0; }
 .word-bank-hint { font-size: 0.85rem; opacity: 0.7; }
@@ -454,25 +491,66 @@ h1, h2, h3, h4 {
   gap: 10px;
 }
 
-/* ---------- reading flower ---------- */
-.reading-flower {
+/* =========================================================
+   READING PROGRESS — top bar + twin flower stems (left/right)
+   ========================================================= */
+
+/* slim bar across the very top of the viewport, always visible */
+.top-progress-track {
   position: fixed;
-  right: 24px;
-  top: 120px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(0,0,0,0.06);
+  z-index: 50;
+}
+.top-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  transition: width 0.12s linear;
+}
+
+/* vertical stem + flower, mirrored left and right of the page */
+.reading-stem {
+  position: fixed;
+  top: 130px;
+  bottom: 110px;
+  width: 3px;
   z-index: 5;
   pointer-events: none;
-  transition: top 0.1s linear;
+  display: none;
 }
-@keyframes bloomPulse {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.08) rotate(3deg); }
+.reading-stem.left { left: 26px; }
+.reading-stem.right { right: 26px; }
+
+.stem-track {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-accent);
+  border-radius: 3px;
 }
-@keyframes sway {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
+.stem-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-radius: 3px;
+  transition: height 0.12s linear;
 }
-.reading-flower svg { animation: sway 4s ease-in-out infinite; }
-.petal {
+
+.reading-flower {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: top 0.12s linear, transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+}
+.reading-flower .petal {
   transform-origin: 50px 50px;
   fill: var(--primary);
   opacity: 0.85;
@@ -483,8 +561,282 @@ h1, h2, h3, h4 {
 .petal-3 { transform: rotate(144deg); animation-delay: 0.6s; }
 .petal-4 { transform: rotate(216deg); animation-delay: 0.9s; }
 .petal-5 { transform: rotate(288deg); animation-delay: 1.2s; }
-.flower-center { fill: var(--primary-dark); }
+.reading-flower .flower-center { fill: var(--primary-dark); }
+.reading-flower svg { animation: sway 4s ease-in-out infinite; }
+
+@keyframes bloomPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(3deg); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+/* full bloom state once the reader nears the bottom of the article */
+.reading-flower.in-bloom {
+  transform: translate(-50%, -50%) scale(1.55);
+  filter: drop-shadow(0 4px 14px rgba(167,139,216,0.55));
+}
+.reading-flower.in-bloom .petal {
+  fill: var(--primary-dark);
+  opacity: 1;
+}
+
+@media (min-width: 1000px) {
+  .reading-stem { display: block; }
+}
+
+/* ---------- "you reached the end" banner ---------- */
+.end-banner {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translate(-50%, -20px);
+  background: var(--card);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.end-banner.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- Shinchan reading mascot ----------
+   Original face art "By - Ayush", adapted here as a small
+   corner companion that peeks out once you finish an article. */
+.shinchan-mascot {
+  position: fixed;
+  bottom: -260px;
+  right: 8px;
+  width: 160px;
+  height: 274px;
+  overflow: visible;
+  transform: scale(0.46);
+  transform-origin: bottom right;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: bottom 0.5s cubic-bezier(.34,1.56,.64,1), opacity 0.4s ease;
+}
+.shinchan-mascot.show {
+  bottom: -40px;
+  opacity: 1;
+}
+@media (max-width: 700px) {
+  .shinchan-mascot { transform: scale(0.32); right: -6px; }
+}
+
+.shinchan-mascot .face {
+  height: 600px;
+  width: 350px;
+  position: relative;
+  margin: auto;
+}
+.shinchan-mascot .face:before {
+  content:'';
+  background:#1c1c1c;
+  height:122px;
+  width:95px;
+  position:absolute;
+  z-index:6;
+  left:210px;
+  top:29px;
+  border-radius:100% 190% 100% 0%;
+  transform: rotate(-20deg);
+}
+.shinchan-mascot .face:after {
+  content:'';
+  width:230px;
+  height:180px;
+  background:#1c1c1c;
+  transform: rotate(-8deg);
+  position:absolute;
+  border-radius:100% 160% 100% 0%;
+  left:70px;
+  bottom:-14px;
+  top:10px;
+  z-index:5;
+}
+.shinchan-mascot .forhead, .shinchan-mascot .forhead:after {
+  content: '';
+  width: 220px;
+  height: 181px;
+  background: #fbc6a3;
+  transform: rotate(-3deg);
+  position: absolute;
+  border-radius: 60% 120% 50% 0%;
+  left: 67px;
+  bottom: -14px;
+  top: 21px;
+  z-index: 6;
+}
+.shinchan-mascot .forhead:after {
+  width: 160px;
+  height: 150px;
+  border-radius: 150% 174% 159% 100%;
+  transform: rotate(-20deg);
+  top: 13px;
+  left: 59px;
+  border-top: 15px solid #fbc6a3;
+}
+.shinchan-mascot .forhead:before {
+  background:#fbc6a3;
+  width:60px;
+  height:10px;
+  content:'';
+  position:absolute;
+  z-index:7;
+  left:105px;
+  top:9px;
+  transform: rotate(13deg);
+  border-radius:100%;
+}
+.shinchan-mascot .ear {
+  width:60px;
+  height:50px;
+  background:#fbc6a3;
+  z-index:7;
+  position:absolute;
+  border-radius:300% 190% 200% 100%;
+  transform: rotate(-20deg);
+  top:110px;
+  left:285px;
+}
+.shinchan-mascot .cheeks {
+  background: #fbc6a3;
+  width: 280px;
+  height: 100px;
+  border-radius: 50px 0px 50px 40px;
+  transform: rotate(-3deg);
+  position: relative;
+  top: 108px;
+  left:10px;
+}
+.shinchan-mascot .cheeks:after {
+  width: 297px;
+  height: 100px;
+  background: #fbc6a3;
+  content: '';
+  transform: rotate(-3deg);
+  position: absolute;
+  border-radius: 100% 100% 100% 100%;
+  left: 1px;
+  bottom: -14px;
+}
+.shinchan-mascot .eye {
+  width:40px;
+  height:40px;
+  position:relative;
+  background:#1c1c1c;
+  border-radius:100%;
+  animation: shinchan-close-eye 4s none .2s infinite;
+}
+.shinchan-mascot .eye:after {
+  content:'';
+  position:absolute;
+  background:white;
+  width:15px;
+  height:15px;
+  border-radius:100%;
+  left:17px;
+  top:12px;
+}
+.shinchan-mascot .eye:before {
+  content:'';
+  position:absolute;
+  width:70px;
+  height:60px;
+  border-radius:100%;
+  border-top:2px solid #1c1c1c;
+  left:-20px;
+  margin-top:-20px;
+}
+.shinchan-mascot .eye.left,.shinchan-mascot .eye.right {
+  position:absolute;
+  top:80px;
+  left:100px;
+  z-index:10;
+}
+.shinchan-mascot .eye.right { left:190px; top:90px; }
+.shinchan-mascot .eyebrow {
+  animation: shinchan-eyebrow 2s linear .2s infinite;
+}
+.shinchan-mascot .eyebrow,.shinchan-mascot .eyebrow:after {
+  position:absolute;
+  width:20px;
+  height:60px;
+  background:#1c1c1c;
+  z-index:8;
+  border-radius:15px;
+  transform: rotate(40deg);
+  top:10px;
+  left:90px;
+}
+.shinchan-mascot .eyebrow:after {
+  content:'';
+  transform: rotate(-100deg);
+  left:19px;
+  margin-top:-23px;
+  top:auto;
+}
+.shinchan-mascot .eyebrow.right {
+  left:180px;
+  top:8px;
+  transform: rotate(50deg);
+}
+.shinchan-mascot .mouth {
+  position:absolute;
+  width:40px;
+  height:40px;
+  background:#76322f;
+  border-radius:100%;
+  top:180px;
+  left:50px;
+  z-index:8;
+}
+.shinchan-mascot .shy {
+  position:absolute;
+  width:0px;
+  height:0px;
+  border-radius:100%;
+  opacity:0;
+  box-shadow: 0px 0px 40px 20px var(--primary);
+  z-index:8;
+  left:35px;
+  top:160px;
+  animation: shinchan-shy 6s linear .2s infinite;
+}
+.shinchan-mascot .shy.right { left:170px; top:180px; }
+
+@keyframes shinchan-eyebrow {
+  0% {margin-top:auto}
+  10% {margin-top:-10px}
+  20% {margin-top:auto}
+  30% {margin-top:-10px}
+  40% {margin-top:auto}
+  100% {margin-top:auto}
+}
+@keyframes shinchan-shy {
+  0% {opacity:0}
+  10% {opacity:0.25}
+  90% {opacity:0.25}
+  100% {opacity:0}
+}
+@keyframes shinchan-close-eye {
+  0% { height: 40px; margin-top: auto; overflow: auto; }
+  5% { height: 2px; margin-top: 20px; overflow: hidden; }
+  5.1% { height: 40px; margin-top:0; overflow:visible; }
+}
 
 @media (max-width: 900px) {
-  .reading-flower { display: none; } /* keep mobile reading view clean */
+  /* keep the mobile reading view clean; top progress bar still shows progress */
+  .reading-stem { display: none; }
 }
